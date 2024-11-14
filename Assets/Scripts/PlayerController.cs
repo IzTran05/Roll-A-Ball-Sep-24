@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
    private int pickupCount;
    public Timer timer;
    private bool gameOver = false; 
+    
 
     [Header("UI")]
     public TMP_Text pickupText;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public GameObject winPanel;
     public TMP_Text winTimeText;
     public GameObject inGamePanel;
+    public GameObject gameOverScreen;
 
 
    
@@ -38,6 +40,9 @@ public class PlayerController : MonoBehaviour
 
         //Turn off win panel
         winPanel.SetActive(false);
+
+        //GameOverScreen
+        gameOverScreen.SetActive(false);
     }
 
     private void Update()
@@ -108,6 +113,9 @@ public class PlayerController : MonoBehaviour
 
         //Turn off win panel
         winPanel.SetActive(true);
+
+        gameOverScreen.SetActive(true);
+        winTimeText.text = "You Win!";
 
         //Stop the ball from rolling
         rb.velocity = Vector3.zero;
