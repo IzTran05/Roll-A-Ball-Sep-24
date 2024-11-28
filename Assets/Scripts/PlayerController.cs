@@ -111,11 +111,10 @@ public class PlayerController : MonoBehaviour
         //Turn off InGamePanel
         inGamePanel.SetActive(false);
 
-        //Turn off win panel
+        //Turn off win panel (Update*:Temporarly set to false)
         winPanel.SetActive(true);
 
-        gameOverScreen.SetActive(true);
-        winTimeText.text = "You Win!";
+     
 
         //Stop the ball from rolling
         rb.velocity = Vector3.zero;
