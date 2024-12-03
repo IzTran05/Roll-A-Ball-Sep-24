@@ -9,7 +9,10 @@ public class PlayerController : MonoBehaviour
    private Rigidbody rb;
    private int pickupCount;
    public Timer timer;
-   private bool gameOver = false; 
+   private bool gameOver = false;
+    GameObject resetPoint;
+    bool resetting = false;
+    Color originalColor;
     
 
     [Header("UI")]
@@ -25,6 +28,8 @@ public class PlayerController : MonoBehaviour
  
     void Start()
     {
+        //Addition for pause screen
+        Time.timeScale = 1;
         // Gets the rigidbody component attatched to this game object
         rb = GetComponent<Rigidbody>();
         //Gets the number of pickups in our scene
@@ -43,6 +48,10 @@ public class PlayerController : MonoBehaviour
 
         //GameOverScreen
         gameOverScreen.SetActive(false);
+
+        //The reset zone
+        resetPoint = GameObject.Find("Reset Point");
+        originalColor = GetComponent<Renderer>().material.color;
     }
 
     private void Update()
@@ -53,6 +62,10 @@ public class PlayerController : MonoBehaviour
     
     void FixedUpdate()
     {
+        //restart function
+        if (resetting)
+            return;
+
         //if (gameOver == true)
           //  return;
         // Store the horizontal axis value in a float
@@ -120,6 +133,37 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Respawn"))
+        {
+            StartCoroutine(ResetPlayer()); 
+        }
+        
+    }
+
+    public IEnumerator ResetPlayer()
+    {
+        resetting = true;
+        GetComponent<Renderer>().material.color = Color.black;
+        rb.velocity = Vector3.zero;
+        Vector3 startPos = transform.position;
+        float resetSpeed = 2f;
+        var i = 0.0f;
+        var rate = 1.0f / resetSpeed;
+        while (i < 1.0f)
+        {
+            i += Time.deltaTime * rate;
+            transform.position = Vector3.Lerp(startPos, resetPoint.transform.position, i);
+            yield return null;
+        }
+       
+        GetComponent<Renderer>().material.color = originalColor;
+        resetting = false;
+    }
+
+
 
     //Temporary restart function
     public void ResetGame()
