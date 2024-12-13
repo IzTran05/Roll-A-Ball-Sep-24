@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
     GameObject resetPoint;
     bool resetting = false;
     Color originalColor;
+
+    //Controllers
+    GameController gameController;
     
 
     [Header("UI")]
@@ -52,6 +55,7 @@ public class PlayerController : MonoBehaviour
         //The reset zone
         resetPoint = GameObject.Find("Reset Point");
         originalColor = GetComponent<Renderer>().material.color;
+        gameController = FindObjectOfType<GameController>();
     }
 
     private void Update()
@@ -64,6 +68,8 @@ public class PlayerController : MonoBehaviour
     {
         //restart function
         if (resetting)
+            return;
+        if (gameController.controlType == ControlType.WorldTilt)
             return;
 
         //if (gameOver == true)
@@ -97,6 +103,12 @@ public class PlayerController : MonoBehaviour
             //starts the timer 
             timer.StartTimer();
 
+        }
+
+        if(other.gameObject.CompareTag("PowerUp"))
+        {
+            other.GetComponent<PowerUp>().UsePowerUp();
+            other.gameObject.transform.position = Vector3.down * 1000;
         }
     }
 
