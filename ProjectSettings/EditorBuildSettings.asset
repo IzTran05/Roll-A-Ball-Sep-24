@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level 2.unity
     guid: 4615ea956181c4ee0b5824a790d226f0
+  - enabled: 1
+    path: Assets/Scenes/TiltWorld.unity
+    guid: 90725a72e6b7a401485f29b8af06d817
   m_configObjects: {}

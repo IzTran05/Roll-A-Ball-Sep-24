@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour
     GameObject resetPoint;
     bool resetting = false;
     Color originalColor;
-
+    bool grounded = true;
+   
     //Controllers
     GameController gameController;
     
@@ -56,11 +57,19 @@ public class PlayerController : MonoBehaviour
         resetPoint = GameObject.Find("Reset Point");
         originalColor = GetComponent<Renderer>().material.color;
         gameController = FindObjectOfType<GameController>();
+
+        pickupCount = GameObject.FindGameObjectsWithTag("Pickup").Length
+                      + GameObject.FindGameObjectsWithTag("Bowling Pin").Length;
     }
 
     private void Update()
     {
         timerText.text = "Time: " + timer.currentTime.ToString("F2");
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Debug.Log("W");
+        }
     }
 
     
@@ -69,8 +78,22 @@ public class PlayerController : MonoBehaviour
         //restart function
         if (resetting)
             return;
-        if (gameController.controlType == ControlType.WorldTilt)
-            return;
+
+        //if (gameController.controlType == ControlType.WorldTilt)
+            //return;
+
+        //if (grounded)
+        //{
+            //float moveHorizontal = Input.GetAxis("Horizontal");
+            //float moveVertical = Input.GetAxis("Vertical");
+            //Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+            //rb.AddForce(movement * speed);
+       // }
+
+
+
+
+        
 
         //if (gameOver == true)
           //  return;
@@ -155,6 +178,22 @@ public class PlayerController : MonoBehaviour
         
     }
 
+   // private void OnCollisionStay(Collision collision)
+    //{
+        //if (collision.collider.CompareTag("Ground"))
+            //grounded = true;
+    //}
+
+   // private void OnCollisionExit(Collision collision)
+    //{
+        //if (collision.collider.CompareTag("Ground"))
+            //grounded = false;
+   // }
+
+
+
+
+
     public IEnumerator ResetPlayer()
     {
         resetting = true;
@@ -182,6 +221,14 @@ public class PlayerController : MonoBehaviour
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
+
+    public void PinFall()
+    {
+        count += 1;
+        SetCountText();
+    }
+
+
 }
 
 

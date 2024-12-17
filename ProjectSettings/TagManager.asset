@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Pickup
   - PowerUp
+  - Teleporter
+  - Bowling Pin
   layers:
   - Default
   - TransparentFX
