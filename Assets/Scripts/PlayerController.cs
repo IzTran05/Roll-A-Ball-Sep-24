@@ -13,7 +13,9 @@ public class PlayerController : MonoBehaviour
     GameObject resetPoint;
     bool resetting = false;
     Color originalColor;
-    bool grounded = true;
+    public bool grounded = true;
+    private bool onJumpPad;
+    public float launchSpeed = 20f;
    
     //Controllers
     GameController gameController;
@@ -26,10 +28,12 @@ public class PlayerController : MonoBehaviour
     public TMP_Text winTimeText;
     public GameObject inGamePanel;
     public GameObject gameOverScreen;
+    public int count = 0;
 
 
-   
- 
+
+
+
     void Start()
     {
         //Addition for pause screen
@@ -82,31 +86,26 @@ public class PlayerController : MonoBehaviour
         //if (gameController.controlType == ControlType.WorldTilt)
             //return;
 
-        //if (grounded)
-        //{
-            //float moveHorizontal = Input.GetAxis("Horizontal");
-            //float moveVertical = Input.GetAxis("Vertical");
-            //Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-            //rb.AddForce(movement * speed);
-       // }
-
-
-
-
-        
 
         //if (gameOver == true)
           //  return;
         // Store the horizontal axis value in a float
         float moveHorizontal = Input.GetAxis("Horizontal");
         // Store the vertical axis value in a float
-        float moveVertical = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+
 
         // Create a new Vector 3 based on the horizontal and vertical values
         Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
 
         // Add force to our rigidbody from our movement vector * spped variable
-        rb.AddForce(movement * speed * Time.deltaTime);  
+        rb.AddForce(movement * speed * Time.deltaTime);
+
+        if (onJumpPad == true  && grounded)
+        {
+            onJumpPad = false;
+            JumpPad(movement);
+        }
         
        
     }
@@ -132,6 +131,11 @@ public class PlayerController : MonoBehaviour
         {
             other.GetComponent<PowerUp>().UsePowerUp();
             other.gameObject.transform.position = Vector3.down * 1000;
+        }
+
+        if(other.gameObject.CompareTag("Jump Pad"))
+        {
+            onJumpPad = true;
         }
     }
 
@@ -178,17 +182,17 @@ public class PlayerController : MonoBehaviour
         
     }
 
-   // private void OnCollisionStay(Collision collision)
-    //{
-        //if (collision.collider.CompareTag("Ground"))
-            //grounded = true;
-    //}
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.collider.CompareTag("Grounded"))
+            grounded = true;
+    }
 
-   // private void OnCollisionExit(Collision collision)
-    //{
-        //if (collision.collider.CompareTag("Ground"))
-            //grounded = false;
-   // }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag("Grounded"))
+            grounded = false;
+    }
 
 
 
@@ -226,7 +230,30 @@ public class PlayerController : MonoBehaviour
     {
         count += 1;
         SetCountText();
+        if (count >= 5)
+        {
+            KnockedDown();
+        }
+
+
     }
+
+    private void SetCountText()
+    {
+
+    }
+
+    private void KnockedDown()
+    {
+        Debug.Log("Pins Knocked Down: ");
+    }
+
+    private void JumpPad(Vector3 _movement)
+    {
+        Vector3 jumpForce = (_movement + Vector3.up) * launchSpeed;
+        rb.AddForce(jumpForce, ForceMode.Impulse);
+    }
+    
 
 
 }

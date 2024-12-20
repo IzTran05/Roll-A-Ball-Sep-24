@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TiltWorld.unity
     guid: 90725a72e6b7a401485f29b8af06d817
+  - enabled: 1
+    path: Assets/Scenes/Bowling Bonus.unity
+    guid: 040ad5352c47c4e658cc407198811a7f
+  - enabled: 1
+    path: Assets/Scenes/Level 3.unity
+    guid: 2d0f15df5da674ba0b3f5eb9ab252642
   m_configObjects: {}

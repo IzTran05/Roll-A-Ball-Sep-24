@@ -8,6 +8,8 @@ TagManager:
   - PowerUp
   - Teleporter
   - Bowling Pin
+  - Jump Pad
+  - Grounded
   layers:
   - Default
   - TransparentFX
